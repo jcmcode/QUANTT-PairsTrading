@@ -23,3 +23,7 @@ Numpy/Pandas get started:
 https://www.youtube.com/watch?v=VXU4LSAQDSc
 
 https://www.youtube.com/watch?v=VXtjG_GzO7Q
+
+Other Useful Resources:
+
+https://www.youtube.com/watch?v=DjYZk8nrXVY
