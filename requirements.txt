@@ -1,1 +1,11 @@
-numpy pandas scipy statsmodels scikit-learn yfinance backtesting matplotlib seaborn plotly streamlit
+numpy
+pandas
+scipy
+statsmodels
+scikit-learn
+yfinance
+backtesting
+matplotlib
+seaborn
+plotly
+streamlit
