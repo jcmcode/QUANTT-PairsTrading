@@ -23,7 +23,7 @@ Work on functions to track PnL, maximum drawdown, sharpe ratio, profit factor et
 Visualize performance
 
 
-## 🧩 Team Task Breakdown — Week 1 (Part 1: Pairs Trading)
+##  Team Task Breakdown — Week 1 (Part 1: Pairs Trading)
 
 ###  Goal for the Week
 Develop the **core components** of the pairs trading pipeline:
