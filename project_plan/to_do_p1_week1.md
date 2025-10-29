@@ -99,8 +99,8 @@ Develop the **core components** of the pairs trading pipeline:
 **Tasks:**
 - [ ] Create a `backtest()` function that:
   - Takes in:
-    - The price data (`/data/KO_PEP.csv')
-    - The trading signals from signals
+    - The price data (`/data/KO_PEP.csv`)
+    - The trading signals from signals.py
     - Ticker names (`ticker1`, `ticker2`)
   - Simulates positions based on signals:
     - **Long spread:** Buy KO, Sell PEP when `zscore < -2`
