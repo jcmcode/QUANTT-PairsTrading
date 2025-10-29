@@ -1,0 +1,1 @@
+#get data from yfinance for 2 stocks 
