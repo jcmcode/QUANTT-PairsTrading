@@ -1,0 +1,1 @@
+#simulates trades, computes returns, and metrics for performance evaluation

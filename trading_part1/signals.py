@@ -1,0 +1,1 @@
+#creates entry and exist signals based on z-score
