@@ -9,3 +9,10 @@ matplotlib
 seaborn
 plotly
 streamlit
+tqdm
+python-dotenv
+arch
+pyarrow
+joblib
+pytest
+black
