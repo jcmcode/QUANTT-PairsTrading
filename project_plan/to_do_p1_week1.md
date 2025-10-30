@@ -73,7 +73,7 @@ Develop the **core components** of the pairs trading pipeline:
 **Deliverables:**
 - File: `hedge_ratio.py`  
 - Calculated hedge ratio printed in console  
-- Plot of spread + rolling averages (saved to `/results/plots/`) (If you plotted it not necessary right away just extra) 
+- Plot of spread + rolling averages (saved to `/data/plots/`) (If you plotted it not necessary right away just extra) 
 
 ---
 
