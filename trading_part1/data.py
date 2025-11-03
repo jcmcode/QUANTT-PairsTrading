@@ -19,6 +19,7 @@
 
 import yfinance as yf
 import pandas as pd
+import os
 
 def get_data(ticker1, ticker2, start_date, end_date):
   
@@ -35,7 +36,13 @@ def get_data(ticker1, ticker2, start_date, end_date):
   data.dropna(inplace=True) 
   
   return data
-
+  
+def save_data(ticker1, ticker2, data):
+  # Make a folder named data, continue if it already exists
+  os.makedirs("data", exist_ok=True)
+  file_path = f"data/{ticker1}_{ticker2}.csv"
+  data.to_csv(file_path)
+  
 if __name__ == "__main__":
     # Example usage — pull KO & PEP data
     ticker1 = "KO"
@@ -45,5 +52,6 @@ if __name__ == "__main__":
 
     # get data for the two tickers 
     data = get_data(ticker1, ticker2, start_date, end_date)
+    save_data(ticker1, ticker2, data)
     
     
