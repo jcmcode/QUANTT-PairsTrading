@@ -1,26 +1,13 @@
 """ 
         get data from yfinance for 2 stocks 
         **Objective:** Build the data collection and preprocessing module.
-
-        **Tasks:**
-        - [ ] Create a function `get_data(ticker1, ticker2, start_date, end_date)` that:
-          - Uses `yfinance` to download **Adjusted Close** prices for both tickers.  
-          - Cleans missing data and aligns both time series by date.  
-          - Returns a clean `DataFrame` with two columns (e.g., `KO`, `PEP`).
-        - [ ] Save the data to `data/KO_PEP.csv` for reproducibility.  
-        - [ ] Add basic summary outputs:
-          - Start/end dates  
-          - Number of data points  
-          - Correlation between the two assets
-
-        **Deliverables:**
-        - File: `data.py`  
-        - Clean dataset saved to `/data/KO_PEP.csv`  
 """
 
 import yfinance as yf
 import pandas as pd
 import os
+
+import matplotlib.pyplot as plt
 
 def get_data(ticker1, ticker2, start_date, end_date):
   """
@@ -72,6 +59,20 @@ def summarize_data(ticker1, ticker2, data):
   print(f"Number of data points: {num_points}")
   print(f"Correleation between {ticker1} and {ticker2}: {corr}")
   
+def plot_data(ticker1, ticker2, data):
+  """
+    Plot both stock prices on the same graph for comparison.
+    """
+  plt.figure(figsize=(10, 6))
+  plt.plot(data.index, data[ticker1], label=ticker1)
+  plt.plot(data.index, data[ticker2], label=ticker2)
+  
+  plt.title(f"{ticker1} vs {ticker2} Adjusted Close Prices")
+  plt.xlabel("Date")
+  plt.ylabel("Adjusted Close Price (USD)")
+  plt.legend()
+  plt.grid(True)
+  plt.show()
   
 if __name__ == "__main__":
     # Example usage — pull KO & PEP data
@@ -89,4 +90,6 @@ if __name__ == "__main__":
     # print summarized information
     summarize_data(ticker1, ticker2, data)
     
+    # plot data
+    plot_data(ticker1, ticker2, data)
     
