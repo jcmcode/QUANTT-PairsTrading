@@ -53,9 +53,19 @@ df = df.set_index("Date").sort_index()
 df = df[["KO", "PEP"]].dropna()
 
 hedge_ratio = hedge(df)
+beta = hedge(df)
 
 # spread
 spread = calculate_spread(df, "KO", "PEP", beta)
 # rolling data
 rolling_mean = rolling_mean_calc(spread, windows=(30, 60, 252))
 rolling_std = rolling_std_calc(spread, windows=(30, 60, 252))
+
+
+## testing
+'''
+print(f"\n\n\nhedge ratio: {beta}\n\n\n")
+print(f"spread: \n{spread}\n\n\n")
+print(f"rolling mean: \n{rolling_mean}\n\n\n")
+print(f"rolling std:\n {rolling_std}")
+'''
