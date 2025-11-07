@@ -81,13 +81,13 @@ df = df[["KO", "PEP"]].dropna()
 
 hedge_ratio = hedge(df)
 beta = hedge(df)
-
 # spread
 spread = calculate_spread(df, "KO", "PEP", beta)
 # rolling data
 rolling_mean = rolling_mean_calc(spread, windows=(30, 60, 252))
 rolling_std = rolling_std_calc(spread, windows=(30, 60, 252))
 
+# plot
 plot_spread_mean(rolling_mean)
 plot_spread_std(rolling_std)
 
