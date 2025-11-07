@@ -1,6 +1,7 @@
 #find hedge ratio via linear regression
 import pandas as pd
 import statsmodels.api as sm
+import matplotlib.pyplot as plt
 
 
 def calculate_spread(df, ticker1, ticker2, hedge_ratio):
@@ -45,6 +46,32 @@ def hedge(df):
 
     return beta
 
+def plot_spread_mean(data, cols=("spread", "30daymean", "60daymean", "252daymean")):
+
+    plt.figure(figsize=(14, 6))
+    for c in cols:
+        plt.plot(data.index, data[c], label=c)
+
+    plt.title("KO & PEP Spread with Rolling Means")
+    plt.xlabel("Date")
+    plt.ylabel("Spread")
+    plt.grid(True)
+    plt.legend()
+    plt.show()
+
+def plot_spread_std(data, cols=("spread", "30daystd", "60daystd", "252daystd")):
+
+    plt.figure(figsize=(14, 6))
+    for c in cols:
+        plt.plot(data.index, data[c], label=c)
+
+    plt.title("KO & PEP Spread with Rolling STD")
+    plt.xlabel("Date")
+    plt.ylabel("Spread")
+    plt.grid(True)
+    plt.legend()
+    plt.show()
+
 # load the file and read date column
 df = pd.read_csv("data/KO_PEP.csv", parse_dates=["Date"])
 # sort by date
@@ -61,6 +88,8 @@ spread = calculate_spread(df, "KO", "PEP", beta)
 rolling_mean = rolling_mean_calc(spread, windows=(30, 60, 252))
 rolling_std = rolling_std_calc(spread, windows=(30, 60, 252))
 
+plot_spread_mean(rolling_mean)
+plot_spread_std(rolling_std)
 
 ## testing
 '''
