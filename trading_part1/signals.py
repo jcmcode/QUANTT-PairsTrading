@@ -23,20 +23,3 @@ def generate_signals(Zt: pd.Series) -> pd.Series:
     signal[Zt < -2] = 1 # Spread low
     signal[Zt.abs() < 0.5] = 0  # Exit position
     return signal
-
-
-if __name__ == "__main__":
-    import numpy as np
-
-    # create fake spread data for testing
-    np.random.seed(42)
-    spread = pd.Series(np.random.randn(300).cumsum())
-
-    # calculate z-scores
-    z30 = calc_zscore(spread)
-    signals = generate_signals(z30)
-
-    print("Last 5 z-scores:")
-    print(z30.tail(5))
-    print("\nLast 5 signals:")
-    print(signals.tail(5))
