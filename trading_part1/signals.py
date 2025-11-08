@@ -1,25 +1,33 @@
 #creates entry and exist signals based on z-score
 import pandas as pd
+import hedge_ratio as hr
 
-def calc_zscore(St: pd.Series, days: int = 30) -> pd.Series:
+def generate_signals(data: pd.DataFrame, ticker1: str, ticker2: str, days: int = 30) -> pd.DataFrame:
     """
-     Calculate z-score for given spread
+    Calculate z-score and generate trading signals
+    -1 = Spread high -> Short KO, Long PEP (Sell the spread)
+    +1 = Spread low -> Long Ko, Short PEP (Buy the spread)
+     0 = Exit position
     """
+    
+    # Calculate Spread
+    hedge_ratio =  hr.hedge(data)
+    St = hr.calculate_spread(data, ticker1, ticker2, hedge_ratio)
+
+    # Calculate z-score
     rolling_mean_St = St.rolling(window=days).mean()
     rolling_std_St = St.rolling(window=days).std()
     Zt = (St - rolling_mean_St) / rolling_std_St
-    return Zt
 
-
-def generate_signals(Zt: pd.Series) -> pd.Series:
-    """
-    Generate trading signals based on z-score 
-    -1 = Spread high -> Short KO, Long PEP (Sell the spread)
-    +1 = Spread low -> Long Ko, Short PEP (buy the spread)
-     0 = Exit position
-    """
-    signal = pd.Series(0, index = Zt.index)
-    signal[Zt > 2] = -1 # Spread high
-    signal[Zt < -2] = 1 # Spread low
+    # Generate signals
+    signal = pd.Series(0, index = St.index)
+    signal[Zt > 2] = -1 # Spread high (Sell spread)
+    signal[Zt < -2] = 1 # Spread low (Buy spread)
     signal[Zt.abs() < 0.5] = 0  # Exit position
-    return signal
+
+    # Return them
+    return pd.DataFrame({
+        'spread': St,
+        'zscore': Zt,        
+        'signal': signal
+    })
