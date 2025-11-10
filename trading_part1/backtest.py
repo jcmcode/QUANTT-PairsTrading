@@ -6,16 +6,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Backtest function
-def backtest(ticker1, ticker2): #Add singals function return as parameter
-    #What am I getting from singals? getting a column with a zscore singal.
-    #What are the weights on the daily retuns calculations - put them as +1 and -1
-    #How is the data going to be formatted in the csv, ticker closing price, and zscore column
+def backtest(ticker1, ticker2):
 
     pd.options.display.float_format = '{:.6f}'.format
 
     #Load csv and singals into dataframe
     df = pd.read_csv('C:/VSCode/QUANT-PairsTrading/QUANTT-PairsTrading/trading_part1/data/KO_PEP.csv')
-    df_signal = singal.generate_signals( singal.calc_zscore( hedge.calculate_spread(df,ticker1,ticker2, hedge.hedge(df))))
+    df_signal = singal.generate_signals(df, ticker1, ticker2)
+
+    print(df_signal['signal'].value_counts())
 
     print(df.head())
     df['ticker1 - 1'] = df[ticker1].shift(periods = +1)
@@ -30,20 +29,20 @@ def backtest(ticker1, ticker2): #Add singals function return as parameter
 
     #Create new dataframe foe return data 
     df_pairsReturn = df[['KO Returns', 'PEP Returns']].copy()
-    df_pairsReturn['zscore'] = df_signal.values
+    df_pairsReturn['zscore singal'] = df_signal['signal'].values
 
     #Assign weightings to each retrun based off zscore(long or short position)
-    df_pairsReturn['KO Weight'] = np.where(df_pairsReturn['zscore'] == - 1,-1, np.where(df_pairsReturn['zscore'] == 1, 1, 0 ))
+    df_pairsReturn['KO Weight'] = np.where(df_pairsReturn['zscore singal'] == - 1,-1, np.where(df_pairsReturn['zscore singal'] == 1, 1, 0 ))
     df_pairsReturn['PEP Weight'] = -1 * df_pairsReturn['KO Weight']
 
     #Calculate Daily returns and equity curve
     df_pairsReturn['Portfolio Daily Return'] = ( df_pairsReturn['KO Weight'] * df_pairsReturn['KO Returns']) + ( df_pairsReturn['PEP Weight'] * df_pairsReturn['PEP Returns'])
     df_pairsReturn['Equity Curve'] = (1 + df_pairsReturn['Portfolio Daily Return']).cumprod()
     
-
+    #View Results
     print(df_pairsReturn.tail())
     print(df_pairsReturn['Portfolio Daily Return'].describe())
-    print(df_pairsReturn['zscore'].value_counts())
+    print(df_pairsReturn['zscore singal'].value_counts())
     df_pairsReturn['Equity Curve'].plot()
     df_pairsReturn['Portfolio Daily Return'].plot()
     #df_pairsReturn['KO Returns'].plot()
@@ -59,9 +58,13 @@ def backtest(ticker1, ticker2): #Add singals function return as parameter
 # performance metrics fucntion
 def performance_metrics():
     
+    #Call backtest 
     pnl, equity = backtest('KO', 'PEP')
 
+    #Total retunn is the last element in data frame
     totalReturn = (equity.iloc[-1] - 1) * 100
+
+    #Calculate sharpe ratio, check that standard deviation is non-zero
     if pnl.std() != 0:
         sharpe = pnl.mean()/pnl.std() * np.sqrt(252)
     else:
@@ -85,8 +88,6 @@ def performance_metrics():
 
     print(equity.head(10))
     print(equity.tail(10))
-    print(equity.cummax())
-    print((equity.cummax() - equity)/equity.cummax())
 
     #Total return - use most recent equity value
     #Sharpe Ratio - mean(pnl) / std(pnl) x Sqrt(252)
