@@ -5,13 +5,17 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+directory1 = 'C:/VSCode/QUANT-PairsTrading/QUANTT-PairsTrading/trading_part1/data/KO_PEP.csv'
+
+directory2 = '/Users/jack/Documents/QUANTT-PairsTrading/QUANTT-PairsTrading/trading_part1/data/KO_PEP.csv'
+
 # Backtest function
 def backtest(ticker1, ticker2):
 
     pd.options.display.float_format = '{:.6f}'.format
 
     #Load csv and singals into dataframe
-    df = pd.read_csv('C:/VSCode/QUANT-PairsTrading/QUANTT-PairsTrading/trading_part1/data/KO_PEP.csv')
+    df = pd.read_csv(directory2)
     df_signal = singal.generate_signals(df, ticker1, ticker2)
 
     print(df_signal['signal'].value_counts())
