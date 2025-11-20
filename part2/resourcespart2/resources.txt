@@ -1,0 +1,27 @@
+https://hudsonthames.org/arbitragelab/ This is a library with a bunch of different arbitrage tools
+
+https://github.com/git-kevinxuhuili/KalmaN-Filter-Based-Pairs-Trading-Strategy-with-HMM github repo doing pairs Trading
+
+https://www.youtube.com/watch?v=60fL8cZvDmM
+
+https://www.quantstart.com/articles/Backtesting-An-Intraday-Mean-Reversion-Pairs-Strategy-Between-SPY-And-IWM/
+
+https://www.pyquantnews.com/the-pyquant-newsletter/build-a-pairs-trading-strategy-python
+
+https://www.quantconnect.com/docs/v2/research-environment/applying-research/pca-and-pairs-trading
+
+https://blog.quantinsti.com/kalman-filter-techniques-statistical-arbitrage-china-futures-market-python/
+
+https://hudson-and-thames-arbitragelab.readthedocs-hosted.com/en/latest/ml_approach/ml_based_pairs_selection.html
+
+https://robotwealth.com/category/quant-trading/cointegration/
+
+https://arxiv.org/pdf/2407.16103?
+
+https://www.quantconnect.com/research/15298/pairs-trading-copula-vs-cointegration/p1
+
+https://www.researchgate.net/publication/303847955_Intraday_pair_trading_strategies_on_high_frequency_data_the_case_of_oil_companies
+
+https://www.mdpi.com/2571-9394/6/2/24
+
+https://digitalcommons.usu.edu/cgi/viewcontent.cgi?article=2447&context=gradreports
