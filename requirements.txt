@@ -16,3 +16,4 @@ pyarrow
 joblib
 pytest
 black
+vectorbt
