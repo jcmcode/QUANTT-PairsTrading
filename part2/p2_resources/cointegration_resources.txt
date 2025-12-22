@@ -1,0 +1,13 @@
+https://www.quantstart.com/articles/Cointegrated-Augmented-Dickey-Fuller-Test-for-Pairs-Trading-Evaluation-in-R/
+
+https://hudsonthames.org/definitive-guide-to-pairs-trading/
+
+https://www.quantconnect.com/docs/v2/research-environment/applying-research/pca-and-pairs-trading
+
+https://www.geeksforgeeks.org/data-science/cointegration-tests/
+
+https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.coint.html
+
+https://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.adfuller.html
+
+https://blog.quantinsti.com/augmented-dickey-fuller-adf-test-for-a-pairs-trading-strategy/
