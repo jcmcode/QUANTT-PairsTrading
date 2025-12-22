@@ -1,0 +1,15 @@
+https://hudson-and-thames-arbitragelab.readthedocs-hosted.com/en/latest/ml_approach/ml_based_pairs_selection.html
+
+https://www.interactivebrokers.com/campus/ibkr-quant-news/dbscan-vs-k-means/
+
+https://www.quantconnect.com/docs/v2/research-environment/applying-research/pca-and-pairs-trading
+
+https://github.com/raktim-roychoudhury/pairs_trading
+
+https://ideas.repec.org/a/eee/ejores/v307y2023i2p929-947.html
+
+https://ieeexplore.ieee.org/document/10126289/
+
+https://www.youtube.com/watch?v=R22JR4tqqqs
+
+https://youtu.be/R22JR4tqqqs
