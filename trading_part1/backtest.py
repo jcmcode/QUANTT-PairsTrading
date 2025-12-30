@@ -15,7 +15,7 @@ def backtest(ticker1, ticker2):
     pd.options.display.float_format = '{:.6f}'.format
 
     #Load csv and singals into dataframe
-    df = pd.read_csv(directory2)
+    df = pd.read_csv(directory1)
     df_signal = singal.generate_signals(df, ticker1, ticker2)
 
     print(df_signal['signal'].value_counts())
@@ -47,8 +47,7 @@ def backtest(ticker1, ticker2):
     print(df_pairsReturn.tail())
     print(df_pairsReturn['Portfolio Daily Return'].describe())
     print(df_pairsReturn['zscore singal'].value_counts())
-    df_pairsReturn['Equity Curve'].plot()
-    df_pairsReturn['Portfolio Daily Return'].plot()
+    
     #df_pairsReturn['KO Returns'].plot()
     #df_pairsReturn['PEP Returns'].plot()
     plt.show()
@@ -62,8 +61,17 @@ def backtest(ticker1, ticker2):
 # performance metrics fucntion
 def performance_metrics():
     
-    #Call backtest 
-    pnl, equity = backtest('KO', 'PEP')
+    #Call backtest
+    pnl, equity = backtest('KO', 'PEP') 
+
+    plt.figure(figsize=(10,5))
+    plt.plot(equity.index, equity, label='Equity Curve')
+    plt.title('Equity Curve Over Time')
+    plt.xlabel('Trading Days')
+    plt.ylabel('Cumulative Equity Value')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
     #Total retunn is the last element in data frame
     totalReturn = (equity.iloc[-1] - 1) * 100
