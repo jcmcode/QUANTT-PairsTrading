@@ -8,7 +8,7 @@ directory1 = 'C:/VSCode/QUANT-PairsTrading/QUANTT-PairsTrading/trading_part1/dat
 df  = pd.read_csv(directory1)
 
 def visual(): 
-    print(df.tail())
+    
     df['Date'] = pd.to_datetime(df['Date'])
 
     plt.figure(figsize = (10,5))
@@ -44,19 +44,13 @@ def adf():
     print(criticalVal)
 
     if(pVal > 0.05):
-        print("Non-Stationary Series")
+        print("Result: Non-Stationary Series")
     elif(adfStat < criticalVal[0]):
-        print("Stationary Series with 99% Accuracy")
+        print("Result: Stationary Series with 99% Accuracy")
     elif(adfStat < criticalVal[1]):
-        print("Stationary Series with 95% Accuracy")
+        print("Result: Stationary Series with 95% Accuracy")
     elif(adfStat < criticalVal[2]):
-        print("Stationary Series with 90% Accuracy")
-
-
-
-
-
-
+        print("Result: Stationary Series with 90% Accuracy")
 
 visual()
 adf()
