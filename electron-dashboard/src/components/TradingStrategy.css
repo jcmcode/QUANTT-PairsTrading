@@ -1,0 +1,134 @@
+.trading-strategy {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.strategy-container h2 {
+  color: #f1f5f9;
+  margin-bottom: 2rem;
+  font-size: 1.75rem;
+}
+
+.strategy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.params-section,
+.strategy-info {
+  background-color: #1e293b;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #334155;
+}
+
+.params-section h3,
+.strategy-info h3 {
+  margin: 0 0 1.5rem 0;
+  color: #f1f5f9;
+  font-size: 1.1rem;
+}
+
+.param-control {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.param-control label {
+  color: #cbd5e1;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.param-control input {
+  padding: 0.75rem;
+  background-color: #0f172a;
+  color: #f1f5f9;
+  border: 1px solid #475569;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.param-control input:disabled {
+  opacity: 0.6;
+}
+
+.param-hint {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.info-box {
+  background-color: #0f172a;
+  padding: 1rem;
+  border-radius: 4px;
+  border-left: 3px solid #10b981;
+}
+
+.info-box h4 {
+  margin: 0 0 0.75rem 0;
+  color: #f1f5f9;
+  font-size: 1rem;
+}
+
+.info-box p {
+  margin: 0 0 1rem 0;
+  color: #cbd5e1;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.info-box ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  list-style: none;
+}
+
+.info-box li {
+  color: #cbd5e1;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.info-box li:before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #60a5fa;
+}
+
+.backtest-btn {
+  width: 100%;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.backtest-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
+}
+
+.backtest-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .strategy-grid {
+    grid-template-columns: 1fr;
+  }
+}
