@@ -9,6 +9,7 @@ matplotlib
 seaborn
 plotly
 streamlit
+streamlit-option-menu
 tqdm
 python-dotenv
 arch
