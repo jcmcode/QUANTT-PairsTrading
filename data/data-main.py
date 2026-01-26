@@ -9,21 +9,22 @@
 
 import yfinance as yf
 import pandas as pd
-import numbers as np
+import numpy as np
 import matplotlib as plt
 from datetime import datetime, timedelta
+import os
 
 #pull user requested stock tickers into a single list
 def getDate(Interval):
     
     if(Interval == '1m'):
         print("Data is Limited to the last 7 days")
-        end = datetime.now().strftime("%Y-%m-%d")
-        start =  (datetime.now() - timedelta(days =7)).strftime("%Y-%m-%d") 
+        end = datetime.now()
+        start =  (datetime.now() - timedelta(days =7))
     elif(Interval == '15m' or Interval == '1h'):
         print("Data is Limited to the last 60 days")
         end = datetime.now().strftime("%Y-%m-%d")
-        start =  (datetime.now() - timedelta(days =59)).strftime("%Y-%m-%d") 
+        start =  (datetime.now() - timedelta(days =59))
     else:
         start = input("Enter start date (YYYY-MM-DD): ").strip()
         end   = input("Enter end date (YYYY-MM-DD): ").strip()
@@ -49,8 +50,9 @@ def data():
 
     data = data.fillna(0)
 
-    print(data.head())
-    return
+    print(data.tail())
+    return data
     
 #dailyData()
 data()
+#saveData()
