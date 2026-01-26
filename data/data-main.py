@@ -11,77 +11,40 @@ import yfinance as yf
 import pandas as pd
 import numbers as np
 import matplotlib as plt
+from datetime import datetime, timedelta
 
 #pull user requested stock tickers into a single list
-def getTickers():
-    raw = input("Enter all tickers seperated by commas: ")
-    tickers = [t.strip().upper() for t in raw.split(",") if t.strip()]
-
-    start = input("Enter start date (YYYY-MM-DD): ").strip()
-    end   = input("Enter end date (YYYY-MM-DD): ").strip()
-
-    request = (tickers, start, end)
-
-    #print(request)
-
-    return request
-#download one min data from each ticker 
-def oneMinData():
-    tickers, start, end = getTickers()
-
-    data = yf.download(tickers, start='2025-01-01', end='2026-01-01', interval='1m' ,auto_adjust=False)['Adj Close']
-    data.index = pd.to_datetime(data.index)
-
-    data = data.fillna(0)
-
-    print(data.head())
+def getDate(Interval):
     
-    return data
+    if(Interval == '1m'):
+        print("Data is Limited to the last 7 days")
+        end = datetime.now().strftime("%Y-%m-%d")
+        start =  (datetime.now() - timedelta(days =7)).strftime("%Y-%m-%d") 
+    elif(Interval == '15m' or Interval == '1h'):
+        print("Data is Limited to the last 60 days")
+        end = datetime.now().strftime("%Y-%m-%d")
+        start =  (datetime.now() - timedelta(days =59)).strftime("%Y-%m-%d") 
+    else:
+        start = input("Enter start date (YYYY-MM-DD): ").strip()
+        end   = input("Enter end date (YYYY-MM-DD): ").strip()
 
-##download data from each ticker 
-def fifteenMinData():
-    tickers, start, end = getTickers()
-
-    data = yf.download(tickers, start='2025-01-01', end='2026-01-01', interval='15m' ,auto_adjust=False)['Adj Close']
-    data.index = pd.to_datetime(data.index)
-
-    data = data.fillna(0)
-
-    print(data.head())
-    
-    return data
-        
-#download data from each ticker 
-def sixtyMinData():
-    tickers, start, end = getTickers()
-
-    data = yf.download(tickers, start='2025-01-01', end='2026-01-01', interval='1h' ,auto_adjust=False)['Adj Close']
-    data.index = pd.to_datetime(data.index)
-
-    data = data.fillna(0)
-
-    print(data.head())
-
-    return data
-
-#download data from each ticker 
-def dailyData():
-    tickers, start, end = getTickers()
-
-    data = yf.download(tickers, start='2025-01-01', end='2026-01-01',auto_adjust=False)['Adj Close']
-    data.index = pd.to_datetime(data.index)
-
-    data = data.fillna(0)
-
-    print(data.head())
-    return
+    return start, end
 
 def data():
+    
+    raw = input("Enter all tickers seperated by commas: ")
+    tickers = [t.strip().upper() for t in raw.split(",") if t.strip()]
     dataInterval = input("Data interval('1m', '15m', '1h', '1d'):")
 
-    tickers, start, end = getTickers()
+    getStart, getEnd = getDate(dataInterval)
 
-    data = yf.download(tickers, start='2025-01-01', end='2026-01-01', interval= dataInterval,auto_adjust=False)['Adj Close']
+    print("\n")
+    print("    ********************************")
+    print(f"Data is from {getStart} to {getEnd}")
+    print("    ********************************")
+    print("\n")
+
+    data = yf.download(tickers, start=getStart, end=getEnd, interval=dataInterval,auto_adjust=False)['Adj Close']
     data.index = pd.to_datetime(data.index)
 
     data = data.fillna(0)
@@ -89,4 +52,5 @@ def data():
     print(data.head())
     return
     
-dailyData()
+#dailyData()
+data()
