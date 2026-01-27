@@ -32,7 +32,6 @@ def getDate(Interval):
     return start, end
 
 def data():
-    
     raw = input("Enter all tickers seperated by commas: ")
     tickers = [t.strip().upper() for t in raw.split(",") if t.strip()]
     dataInterval = input("Data interval('1m', '15m', '1h', '1d'):")
@@ -50,9 +49,10 @@ def data():
 
     data = data.fillna(0)
 
-    print(data.tail())
+    #print(data.tail())
     return data
-    
-#dailyData()
-data()
-#saveData()
+
+if __name__ == "__main__":
+    #dailyData()
+    data()
+    #saveData()
