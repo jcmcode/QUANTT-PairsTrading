@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "transient-correlation"
+version = "0.1.0"
+description = "Clustering-driven transient correlation detection for pairs trading"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "pandas",
+    "yfinance",
+    "scikit-learn",
+    "statsmodels",
+    "pandas-ta-classic",
+    "pykalman",
+    "matplotlib",
+    "seaborn",
+    "plotly",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "jupyter"]
+
+[tool.setuptools.packages.find]
+include = ["validation*", "trading*", "signals*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

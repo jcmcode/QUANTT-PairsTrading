@@ -18,3 +18,7 @@ joblib
 pytest
 black
 vectorbt
+jupyter
+pandas-ta-classic
+pykalman
+yfscreen
