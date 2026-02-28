@@ -2,18 +2,21 @@
 
 A research framework for discovering and trading equity pairs using unsupervised clustering. Instead of starting with cointegration (the traditional approach), this project clusters assets by real-time feature similarity and identifies pairs that consistently land in the same cluster. Those persistently co-clustering pairs are then validated with statistical tests and backtested with z-score mean-reversion strategies.
 
-## Core Idea
+## Highlights
 
-1. Compute 9 features per asset per hour (volatility, market/sector beta, RSI, momentum, regime shifts)
-2. Cluster assets at every timestamp using OPTICS (StandardScaler -> PCA -> OPTICS)
-3. When two assets land in the same cluster, a **transient correlation** has formed
-4. Most are short-lived. But some pairs co-cluster *repeatedly* across many timestamps
-5. Those persistent pairs are validated on their full price history and backtested out-of-sample
+- **142 tickers** across 5 sectors (Technology, Healthcare, Energy, Financial Services, Industrials)
+- **5x lift** over random baselines — clustered pairs pass validation at 4.0% vs 0.8% for random
+- **3,643 pairs** passed the 8% noise-adjusted frequency threshold
+- **940 statistically significant** pairs via permutation testing (Z > 1.96)
+- **57% profitable** in enhanced backtesting (Kalman hedge ratios, optimized z-scores, 10bps costs)
 
-The project has two distinct paths:
+## Key Distinctions
 
-- **Method validation** proves the clusters detect real relationships (5x lift over random baselines)
-- **Trading pipeline** uses clustering purely as a screening tool, then applies standard pairs trading methodology (hedge ratios, z-score signals, walk-forward backtesting) to persistent pairs
+**Transient correlation vs cointegration:** Cointegration assumes a permanent equilibrium. Transient correlations form and dissolve over hours to weeks. Cointegration tests correctly reject transient data (0% pass rate in Phase 1). The 5-test framework was designed to capture short-term mean-reversion properties that transient pairs *can* exhibit.
+
+**Method validation vs trading:** The transient validation (Path A) uses backward-looking data to prove clusters find real relationships. It has look-ahead bias by design and is not a trading strategy. The trading pipeline (Path B) uses clustering only as a screening tool, then runs proper calibration/OOS splits on full price history.
+
+**Noise-adjusted frequency:** OPTICS labels most observations as noise. Raw co-cluster frequency divided by total timestamps drastically underestimates how often pairs genuinely co-cluster. The noise-adjusted metric uses only timestamps where both tickers are non-noise as the denominator.
 
 ## Results
 
@@ -35,59 +38,35 @@ The project has two distinct paths:
 - Enhanced backtest on top 50 pairs with Kalman hedge ratios: **57% profitable** with 10bps transaction costs
 - 940/3,539 pairs statistically significant via permutation testing
 
-## Repository Structure
+## Visuals
 
-```
-README.md                          This file
-requirements.txt                   Full dependency list (includes extras like streamlit, vectorbt, arch)
-main.py                            Placeholder (not currently used)
+![Sector pair heatmap](docs/figures/sector_heatmap.png)
+*Cross-sector pair counts — Technology dominates with 880 intra-sector pairs; cross-sector pairs appear in every combination.*
 
-TransientCorrelation/
-  config.py                        All thresholds as frozen dataclasses
-  pyproject.toml                   Project metadata, pytest config
-  requirements.txt                 Core Python dependencies
-  FILE_GUIDE.md                    Detailed per-file documentation
-  PROJECT_GUIDE.md                 Deep-dive project architecture guide
+![Test pass rates](docs/figures/test_pass_rates.png)
+*Individual pass rates for the 5-test scored validation framework. Hurst and half-life are easy to pass; ADF, variance ratio, and rolling correlation stability are the binding constraints.*
 
-  validation/
-    pair_validation.py             Hedge ratios (OLS/TLS/Kalman), half-life, z-score
-                                   signals, P&L simulation, permutation testing
+![Score distribution](docs/figures/score_distribution.png)
+*Left: validation score histogram (0-5). Right: classification breakdown — 605 strong, 1,543 moderate, 1,200 weak, 295 fail.*
 
-  signals/
-    features.py                    9-feature computation per ticker per timestamp
-    detection.py                   OPTICS clustering pipeline, formation/dissolution events
-    transient.py                   3-window transient event validation (method proof)
-    stable.py                      Stable pair cointegration tracking
+![Algorithm radar](docs/figures/algorithm_radar.png)
+*OPTICS vs KMeans vs DBSCAN on Phase 1 semiconductor data. OPTICS finds the most transient pairs; KMeans has the lowest noise rate; DBSCAN is a middle ground.*
 
-  trading/
-    trading.py                     Noise-adjusted frequency, pair registry, classical
-                                   3-criteria validation, z-score backtest, walk-forward
+![Cumulative P&L](docs/figures/cumulative_pnl.png)
+*Out-of-sample cumulative P&L for a top-scoring pair using OLS hedge ratio, z-score entry at 2.0, exit at 0.5.*
 
-  screener/
-    screening.py                   yfscreen ticker screening
-    universe.py                    3-layer universe construction (liquidity, sector, quality)
-    config.py                      Screener-specific configuration
-    features_adapter.py            Feature computation adapter for screener
-    analysis.py                    5-test scored validation (ADF, half-life, Hurst,
-                                   variance ratio, rolling correlation stability)
-    enhanced_backtest.py           Z-score optimization, Kalman hedge ratios, transaction costs
+## Core Idea
 
-  research/                        Phase 1 notebooks (run optics -> signals -> comparison)
-    optics-clustering.ipynb        Features -> OPTICS -> formations -> co-cluster frequencies
-    optics-signals.ipynb           Transient validation, 5x lift proof
-    KMeans.ipynb                   KMeans pipeline
-    DBScan.ipynb                   DBSCAN pipeline
-    algorithm-comparison.ipynb     Cross-algorithm consensus + permutation tests
+1. Compute 9 features per asset per hour (volatility, market/sector beta, RSI, momentum, regime shifts)
+2. Cluster assets at every timestamp using OPTICS (StandardScaler -> PCA -> OPTICS)
+3. When two assets land in the same cluster, a **transient correlation** has formed
+4. Most are short-lived. But some pairs co-cluster *repeatedly* across many timestamps
+5. Those persistent pairs are validated on their full price history and backtested out-of-sample
 
-  screener/notebooks/              Phase 2 notebooks (run 01 through 05 in order)
-    01-screen-universe.ipynb       Ticker screening + price download
-    02-clustering.ipynb            Per-sector + combined OPTICS clustering
-    03-signals-validation.ipynb    Transient + stable validation per sector
-    04-algorithm-comparison.ipynb  Multi-algorithm consensus + permutation tests
-    05-cross-sector-comparison.ipynb  5-test validation, enhanced backtest, final results
+The project has two distinct paths:
 
-  tests/                           pytest test suite
-```
+- **Method validation** proves the clusters detect real relationships (5x lift over random baselines)
+- **Trading pipeline** uses clustering purely as a screening tool, then applies standard pairs trading methodology (hedge ratios, z-score signals, walk-forward backtesting) to persistent pairs
 
 ## Pipeline
 
@@ -149,6 +128,23 @@ Enhanced backtest adds: grid-searched z-score parameters, Kalman terminal beta (
 | Beta_SPX_Regime_Shift | 50h/147h | Short vs medium market beta difference |
 | Beta_Sector_Regime_Shift | 50h/147h | Short vs medium sector beta difference |
 
+## Repository Structure
+
+```
+TransientCorrelation/
+    config.py                   All thresholds as frozen dataclasses
+    validation/                 Hedge ratios, z-scores, P&L simulation, permutation testing
+    signals/                    9-feature computation and OPTICS clustering pipeline
+    trading/                    Phase 1 backtesting (walk-forward, noise-adjusted frequency)
+    screener/                   Phase 2 cross-sector analysis (5-test framework, enhanced backtest)
+    research/                   Phase 1 notebooks (40 semiconductor tickers)
+    screener/notebooks/         Phase 2 notebooks (142 tickers, run 01→05 in order)
+    tests/                      pytest suite
+    scripts/                    Figure generation
+```
+
+> **Full file-by-file breakdown:** [FILE_GUIDE.md](TransientCorrelation/FILE_GUIDE.md) | **Architecture deep-dive:** [PROJECT_GUIDE.md](TransientCorrelation/PROJECT_GUIDE.md)
+
 ## Configuration
 
 All thresholds live in `TransientCorrelation/config.py` as frozen dataclasses:
@@ -196,6 +192,12 @@ jupyter notebook screener/notebooks/
 
 Notebooks generate pickle artifacts in `research/data/` and `screener/data/` (not tracked in git).
 
+**Generate README figures:**
+```bash
+python scripts/generate_figures.py
+# Requires notebook artifacts to exist; outputs to docs/figures/
+```
+
 ## Dependencies
 
 Python >= 3.10
@@ -206,11 +208,3 @@ numpy, pandas, scipy, statsmodels, scikit-learn, yfinance, matplotlib, seaborn, 
 
 - **[FILE_GUIDE.md](TransientCorrelation/FILE_GUIDE.md)** — Detailed per-file documentation covering every module, its purpose, and key functions
 - **[PROJECT_GUIDE.md](TransientCorrelation/PROJECT_GUIDE.md)** — Deep-dive into the project architecture, design decisions, and data flow
-
-## Key Distinctions
-
-**Transient correlation vs cointegration:** Cointegration assumes a permanent equilibrium. Transient correlations form and dissolve over hours to weeks. Cointegration tests correctly reject transient data (0% pass rate in Phase 1). The 5-test framework was designed to capture short-term mean-reversion properties that transient pairs *can* exhibit.
-
-**Method validation vs trading:** The transient validation (Path A) uses backward-looking data to prove clusters find real relationships. It has look-ahead bias by design and is not a trading strategy. The trading pipeline (Path B) uses clustering only as a screening tool, then runs proper calibration/OOS splits on full price history.
-
-**Noise-adjusted frequency:** OPTICS labels most observations as noise. Raw co-cluster frequency divided by total timestamps drastically underestimates how often pairs genuinely co-cluster. The noise-adjusted metric uses only timestamps where both tickers are non-noise as the denominator.
