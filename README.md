@@ -26,7 +26,7 @@ A research framework for discovering and trading equity pairs using unsupervised
 - 8 consensus pairs identified across all algorithms (e.g., ADI-NXPI, AMAT-KLAC, KLAC-LRCX)
 - Transient validation: **5.0x lift** over random (4.0% clustered pass rate vs 0.8% random)
 - 11 pairs statistically significant via permutation testing (Z > 1.96)
-- 14/26 tradeable pairs profitable out-of-sample, top Sharpe 3.55
+- 14/26 tradeable pairs profitable out-of-sample (no transaction costs), top Sharpe 3.55
 
 ### Phase 2: Cross-Sector (142 tickers, 5 sectors)
 
@@ -34,8 +34,8 @@ A research framework for discovering and trading equity pairs using unsupervised
 - 3,643 pairs passed the 8% noise-adjusted frequency threshold
 - **59% tradeable** (score >= 3 on the 5-test framework)
 - 605 strong pairs (score 4-5), 1,543 moderate (score 3)
-- Baseline backtest: **41% profitable** across all 2,148 tradeable pairs
-- Enhanced backtest on top 50 pairs with Kalman hedge ratios: **57% profitable** with 10bps transaction costs
+- Baseline backtest (no transaction costs): **41% profitable** across all 2,148 tradeable pairs
+- Enhanced backtest on top 50 pairs (Kalman hedge ratios, optimized z-scores, 10bps costs): **57% profitable**
 - 940/3,539 pairs statistically significant via permutation testing
 
 ## Visuals
@@ -53,7 +53,7 @@ A research framework for discovering and trading equity pairs using unsupervised
 *OPTICS vs KMeans vs DBSCAN on Phase 1 semiconductor data. OPTICS finds the most transient pairs; KMeans has the lowest noise rate; DBSCAN is a middle ground.*
 
 ![Cumulative P&L](docs/figures/cumulative_pnl.png)
-*Out-of-sample cumulative P&L for a top-scoring pair using OLS hedge ratio, z-score entry at 2.0, exit at 0.5.*
+*Out-of-sample cumulative P&L for a top-scoring pair — baseline backtest with OLS hedge ratio, z-score entry at 2.0, exit at 0.5, no transaction costs.*
 
 ## Core Idea
 
@@ -111,6 +111,7 @@ Z-score mean-reversion on the OLS spread (`spread = price_A - beta * price_B`):
 - Hedge ratio estimated on calibration data only (67%), fixed for out-of-sample (33%)
 - Long entry: z <= -2.0 | Short entry: z >= 2.0 | Exit: |z| <= 0.5
 - Walk-forward validation: 5 rolling cal/OOS splits
+- Baseline backtest does not include transaction costs.
 
 Enhanced backtest adds: grid-searched z-score parameters, Kalman terminal beta (run on calibration only, no look-ahead), and 10bps transaction costs per trade.
 
