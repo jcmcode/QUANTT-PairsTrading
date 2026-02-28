@@ -31,14 +31,23 @@ The project has two distinct paths:
 - 3,643 pairs passed the 8% noise-adjusted frequency threshold
 - **59% tradeable** (score >= 3 on the 5-test framework)
 - 605 strong pairs (score 4-5), 1,543 moderate (score 3)
-- Enhanced backtest with Kalman hedge ratios: **57% profitable** with 10bps transaction costs
-- 420/2,502 pairs statistically significant via permutation testing
+- Baseline backtest: **41% profitable** across all 2,148 tradeable pairs
+- Enhanced backtest on top 50 pairs with Kalman hedge ratios: **57% profitable** with 10bps transaction costs
+- 940/3,539 pairs statistically significant via permutation testing
 
 ## Repository Structure
 
 ```
+README.md                          This file
+requirements.txt                   Full dependency list (includes extras like streamlit, vectorbt, arch)
+main.py                            Placeholder (not currently used)
+
 TransientCorrelation/
   config.py                        All thresholds as frozen dataclasses
+  pyproject.toml                   Project metadata, pytest config
+  requirements.txt                 Core Python dependencies
+  FILE_GUIDE.md                    Detailed per-file documentation
+  PROJECT_GUIDE.md                 Deep-dive project architecture guide
 
   validation/
     pair_validation.py             Hedge ratios (OLS/TLS/Kalman), half-life, z-score
@@ -114,7 +123,7 @@ Cointegration (p < 0.05) + half-life (5-60 days) + Hurst exponent (< 0.5). Must 
 | Lo-MacKinlay variance ratio | VR < 1, p < 0.10 | 21.8% |
 | Rolling correlation stability | stability > 0.5 | 34.7% |
 
-Score 4-5 = strong, score 3 = moderate (tradeable), score 0-2 = fail.
+Score >= 4 = strong, 3 = moderate, 2 = weak, 0-1 = fail. Pairs scoring >= 3 are considered tradeable.
 
 ### How Pairs Are Traded
 
@@ -136,7 +145,7 @@ Enhanced backtest adds: grid-searched z-score parameters, Kalman terminal beta (
 | Beta_Sector_Short | 50h | Sector beta (leave-one-out) |
 | RSI | 70h | Relative Strength Index (Wilder's smoothing) |
 | Momentum_5H | 5h | 5-hour price momentum |
-| Vol_Regime_Shift | 50h/147h | Short vs medium volatility ratio |
+| Vol_Regime_Shift | 50h/147h | Short vs medium volatility (normalized difference) |
 | Beta_SPX_Regime_Shift | 50h/147h | Short vs medium market beta difference |
 | Beta_Sector_Regime_Shift | 50h/147h | Short vs medium sector beta difference |
 
@@ -165,6 +174,8 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+> **Two requirements files:** `TransientCorrelation/requirements.txt` (14 packages) contains core dependencies for the pipeline and notebooks. The root `requirements.txt` (24 packages) includes extras like streamlit, vectorbt, and arch that are not required for the core pipeline.
+
 **Run tests:**
 ```bash
 pytest tests/
@@ -190,6 +201,11 @@ Notebooks generate pickle artifacts in `research/data/` and `screener/data/` (no
 Python >= 3.10
 
 numpy, pandas, scipy, statsmodels, scikit-learn, yfinance, matplotlib, seaborn, plotly, pykalman, pandas-ta-classic, yfscreen, pytest, jupyter
+
+## Documentation
+
+- **[FILE_GUIDE.md](TransientCorrelation/FILE_GUIDE.md)** — Detailed per-file documentation covering every module, its purpose, and key functions
+- **[PROJECT_GUIDE.md](TransientCorrelation/PROJECT_GUIDE.md)** — Deep-dive into the project architecture, design decisions, and data flow
 
 ## Key Distinctions
 
