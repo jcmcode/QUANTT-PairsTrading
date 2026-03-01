@@ -464,8 +464,11 @@ All backtests run on out-of-sample data with hedge ratios estimated on calibrati
 - 2,148 tradeable pairs
 - 41% profitable, avg Sharpe 1.73, top Sharpe 2.56
 
-**Enhanced** (Kalman hedge, optimized z-scores, 10bps transaction costs):
+**Enhanced** (OLS hedge, optimized z-scores, 10bps transaction costs):
 - 57% profitable (up from 41%), top Sharpe 18.47
+
+**Kalman** (Kalman terminal beta, optimized z-scores, 10bps transaction costs):
+- 64% profitable (up from 57%), avg Sharpe 0.61
 - Kalman terminal beta approach avoids look-ahead bias from adaptive updates
 
 **Walk-forward highlights**: RUN-VNET Sharpe 3.47, NVDA-ORCL Sharpe 2.59

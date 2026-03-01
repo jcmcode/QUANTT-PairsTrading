@@ -8,7 +8,7 @@ A research framework for discovering and trading equity pairs using unsupervised
 - **5x lift** over random baselines — clustered pairs pass validation at 4.0% vs 0.8% for random
 - **3,643 pairs** passed the 8% noise-adjusted frequency threshold
 - **940 statistically significant** pairs via permutation testing (Z > 1.96)
-- **57% profitable** on top 50 pairs in enhanced backtesting (Kalman hedge ratios, optimized z-scores, 10bps costs)
+- **64% profitable** on top 50 pairs with Kalman-filtered hedge ratios, optimized z-scores, and 10bps transaction costs
 
 ## Key Distinctions
 
@@ -35,7 +35,8 @@ A research framework for discovering and trading equity pairs using unsupervised
 - **59% tradeable** (score >= 3 on the 5-test framework)
 - 605 strong pairs (score 4-5), 1,543 moderate (score 3)
 - Baseline backtest (no transaction costs): **41% profitable** across all 2,148 tradeable pairs
-- Enhanced backtest on top 50 pairs (Kalman hedge ratios, optimized z-scores, 10bps costs): **57% profitable**
+- Enhanced backtest on top 50 pairs (optimized z-scores, OLS hedge, 10bps costs): **57% profitable**
+- Kalman backtest on top 50 pairs (Kalman-filtered hedge ratios, optimized z-scores, 10bps costs): **64% profitable**
 - 940/3,539 pairs statistically significant via permutation testing
 
 ## Visuals
